@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import SidebarOption from "./SidebarOption";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 
 // Icons
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
@@ -17,8 +17,10 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Sidebar() {
+  const [user] = useAuthState(auth);
   const [channels] = useCollection(db.collection("rooms"));
 
   // console.log(channels);
@@ -27,10 +29,10 @@ export default function Sidebar() {
     <SidebarContainer>
       <SidebarHeader>
         <SidebarInfo>
-          <h2>Test Username</h2>
+          <h2>{user.displayName}</h2>
           <h3>
             <FiberManualRecordIcon />
-            testuser@kodego.com
+            {user.email}
           </h3>
         </SidebarInfo>
         <CreateIcon />
